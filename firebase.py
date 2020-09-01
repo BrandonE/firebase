@@ -43,6 +43,7 @@ def worker(url):
     Main function in charge of the bulk of the crawling, it assess a status to
     each DB depending on the response.
     '''
+    args_ = args()
     print('Crawling {} ...'.format(url))
     sleep(0.5) #a bit of delay to not abuse in excess the servers
     try:
@@ -72,6 +73,7 @@ def load_file():
     '''
     Parse the HTML file with the results of the pentest-tools subdomains scanner.
     '''
+    args_ = args()
     try:
         from bs4 import BeautifulSoup
 
@@ -92,6 +94,7 @@ def down_tops():
     Credits for the script to @evilpacket
     https://gist.github.com/evilpacket/3628941
     '''
+    args_ = args()
     from subprocess import Popen
     command = "wget -q http://s3.amazonaws.com/alexa-static/top-1m.csv.zip;unzip top-1m.csv.zip; awk -F ',' '{print $2}' top-1m.csv|head -"+str(args_.crawl_top)+" > top-"+str(args_.crawl_top)+".txt; rm top-1m.csv*"
     
@@ -106,6 +109,7 @@ def tops():
     Gather the required number of top domains. Download the file if it
     hasn't been downloaded. Then, repare the urls to be crawled.
     '''
+    args_ = args()
     top_doms = set()
     fn = 'top-{}.txt'.format(args_.crawl_top)
     if not os.path.isfile(fn):
@@ -123,6 +127,7 @@ def amass():
     '''
     From an amass scan output file([-o] argument), gather the DBs urls to crawl.
     '''
+    args_ = args()
     with open(args_.amass) as f:
         dbs = ['https://{}/.json'.format(line.rstrip()) for line in f]
     
